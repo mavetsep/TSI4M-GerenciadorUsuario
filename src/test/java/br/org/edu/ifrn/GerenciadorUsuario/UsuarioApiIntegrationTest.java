@@ -2,6 +2,7 @@ package br.org.edu.ifrn.GerenciadorUsuario;
 
 import br.org.edu.ifrn.GerenciadorUsuario.model.*;
 import br.org.edu.ifrn.GerenciadorUsuario.repository.UsuarioRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,6 +21,7 @@ class UsuarioApiIntegrationTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired UsuarioRepository repository;
+    @Autowired ObjectMapper objectMapper;
 
     @BeforeEach
     void limpar() {
@@ -42,7 +44,7 @@ class UsuarioApiIntegrationTest {
                 .andExpect(jsonPath("$.senha").doesNotExist())
                 .andReturn().getResponse().getContentAsString();
 
-        Long id = Long.valueOf(resposta.replaceAll(".*\\"id\\":(\\d+).*", "$1"));
+        Long id = objectMapper.readTree(resposta).get("id").asLong();
 
         mockMvc.perform(get("/api/usuarios/{id}/nome", id))
                 .andExpect(status().isOk())
