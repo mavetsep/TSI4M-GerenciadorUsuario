@@ -1,0 +1,12 @@
+{
+  "name": "GerenciadorUsuario",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bookworm",
+  "forwardPorts": [8081],
+  "portsAttributes": {
+    "8081": {
+      "label": "API GerenciadorUsuario",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "postCreateCommand": "mvn -q -DskipTests package"
+}
